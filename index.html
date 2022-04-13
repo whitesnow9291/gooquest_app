@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gooquest sync</title>
+    <link rel="stylesheet" href="./css/bootstrap/bootstrap.min.css" />
+    <style>
+        .margin_auto {
+            margin: auto;
+        }
+    </style>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="alert alert-danger" id="error" role="alert">
+
+        </div>
+        <div class="alert alert-success" role="alert" id="success">
+            <strong>Service started!</strong> Email list will be updated every hour according to csv files
+        </div>
+
+        <div class="form-group">
+            <p>Current csv directory path <span class="badge badge-light" id="csv_directory_text"></span></p>
+        </div>
+        <div class="form-group">
+            <button class="btn-sm btn-outline-primary" id="csv_directory">Change csv directory path</button>
+        </div>
+
+        <div class="form-group">
+            <label for="email_list">ID of email list</label>
+            <input type="email" name="email_list" value="" id="email_list_id" placeholder="ID" class="form-control"
+                required>
+        </div>
+        <div class="form-group d-flex align-items-center">
+            <button class="btn btn-primary" id="add-to-list">Start</button>
+            <div class="spinner-border text-info ml-2" role="status" id="loading_spinner">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
