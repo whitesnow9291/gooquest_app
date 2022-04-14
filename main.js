@@ -34,7 +34,15 @@ function createWindow() {
     })
 
 }
+function executeJob() {
+    console.info('I am running =====>')
 
+    const storeData = {
+        email_list_id: store.get('email_list_id') || '',
+        csv_directory_path: store.get('csv_directory_path') || '/',
+    }
+    updateEmailList(storeData)
+}
 ipcMain.on('changeCSVDirectory', (event, path) => {
     const { dialog } = require('electron')
     const fs = require('fs')
@@ -50,15 +58,9 @@ ipcMain.on('changeCSVDirectory', (event, path) => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', function () {
-
     var CronJob = require('cron').CronJob;
-    // new CronJob('0 0 */1 * * *', function () {
-    new CronJob('0 * * * * *', function () {
-        const storeData = {
-            email_list_id: store.get('email_list_id') || '',
-            csv_directory_path: store.get('csv_directory_path') || '/',
-        }
-        updateEmailList(storeData)
+    new CronJob('0 */10 * * * *', function () {
+        executeJob()
     }, null, true, 'America/Los_Angeles');
     createWindow()
 })
@@ -82,6 +84,7 @@ app.on('activate', () => {
 ipcMain.on('changeStoreData', (event, arg) => {
     store.set('csv_directory_path', arg.csv_directory_path);
     store.set('email_list_id', arg.email_list_id)
+    executeJob()
 })
 ipcMain.on('getStoreData', (event, arg) => {
     sendStoreData(event)
@@ -93,5 +96,6 @@ sendStoreData = (event) => {
     }
     event.sender.send('changeStoreData', storeData)
 }
+
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
